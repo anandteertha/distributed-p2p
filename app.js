@@ -1,3 +1,4 @@
+var PORT = 5000;
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -35,6 +36,6 @@ app.post('/chatpage',function(req,res){
   res.sendFile(path.join(__dirname+'/html'+'/chatpage.html'));
 });
 
-http.listen(3000,function(){
+http.listen(PORT,function(){
   console.log('listening on port 3000..');
 });
