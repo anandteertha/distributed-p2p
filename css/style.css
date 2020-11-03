@@ -1,0 +1,154 @@
+body{
+      background: linear-gradient(to right,#746363,#000000);
+      color: white;
+
+    }
+    #username{
+      text-align: center;
+      margin-top: 250px;
+      width: 30%;
+      height: 50px;
+      border: 1px solid white;
+      border-radius: 50px;
+    }
+    #submit{
+      background: #C0C0C0;
+      margin: 50px;
+      text-align: center;
+      width: 15%;
+      height: 40px;
+      border-radius: 20px;
+      box-shadow: 1px 2px #f0f0f0;
+    }
+    #submit:hover{
+      background: #808080;
+    }
+    #submit:active {
+      background-color: #808080;
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+      border: 0px solid black;
+  }
+  .container {
+  display: inline-block;
+  cursor: pointer;
+  overflow:hidden;
+  margin:0 auto;
+  float: left;
+  }
+
+  .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: white;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+
+  .change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+  }
+
+  .change .bar2 {opacity: 0;}
+
+  .change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+  }
+
+  #left-menu{
+    box-sizing: border-box;
+    float: left;
+    border-radius: 50px;
+    margin-top: 50px;
+    margin-left: 20px;
+    height: 650px;
+    width: 350px;
+    background-color: white;
+    opacity: 0.88;
+    overflow: auto;
+    animation: slide 1s linear;
+  }
+
+  @keyframes slide{
+    0%{
+      transform: translate3d(-50px, -10px, -10px);
+    }
+    100%{
+      transform: translate3d(30px, 10px, 10px);
+    }
+  }
+
+  #chatDiv{
+    box-sizing: border-box;
+    float: right;
+    border-radius: 50px;
+    margin-top: 10px;
+    width: 65%;
+    height: 650px;
+    background: white;
+    margin-right: 30px;
+  }
+
+  #elements{
+    box-sizing: border-box;
+    width: 700px;
+    height: 500px;
+  }
+
+  .message{
+    margin-top: 50px;
+    width: 700px;
+    height: 400px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: grey;
+  }
+
+  #chatbox{
+    width: 500px;
+    height: 60px;
+    text-align: center;
+    margin-right: 15px;
+    margin-top: 50px;
+    border-radius: 30px;
+    overflow: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  #sendmessageDiv{
+    display: inline-block;
+    background: black;
+    color: white;
+    text-align: justify;
+    min-width: 100px;
+    min-height: 30px;
+    max-width: 500px;
+    max-height: 200px;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 5px;
+    margin-right: 20px;
+    margin-left: 400px;
+  }
+
+  #recieveMessage{
+    display: inline-block;
+    background: black;
+    color: white;
+    text-align: justify;
+    min-width: 100px;
+    min-height: 30px;
+    max-width: 500px;
+    max-height: 200px;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 5px;
+    margin-right: 400px;
+    margin-left: 20px;
+  }

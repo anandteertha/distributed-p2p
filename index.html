@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src = "/socket.io/socket.io.js"></script>
+    <title>CHATTx</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <script type="text/javascript">
+      var socket = io();
+      function addClient(){
+        const username = document.getElementById('username');
+        socket.emit('addClient',username.value);
+        localStorage.clientName = username.value;
+      }
+    </script>
+    <center>
+      <div class="main" id="main">
+        <div class="head" id="head">
+          <h2>WELCOME TO CHATTx</h2>
+          <form class="" action="/chatpage" method="post">
+            <input id='username' type="text" name="" value="" placeholder="what should people call you??????"><br>
+            <input id="submit"type="submit" onclick="addClient()" value="Get started..">
+          </form>
+        </div>
+      </div>
+    </center>
+  </body>
+</html>

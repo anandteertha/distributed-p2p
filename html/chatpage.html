@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>CHATTx</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src = "/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style media="screen">
+      #submit{
+        margin-right: 20px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="w3-center w3-animate-left" id="left-menu" style="display: none">
+    </div>
+    <div class="container" id ='container' onclick="myFunction(this)">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
+    <br><br>
+    <center><div class="main-chat" id='chatDiv'>
+      <div class="" id='elements'>
+        <div class="message" id="message">
+
+        </div>
+        <input id='chatbox' type="text" name="" value="" placeholder="type your message here..">
+        <input id="submit"type="submit" onclick="sendMessage()" value="send">
+      </div>
+    </div></center>
+    <script>
+      var socket = io();
+      const chatEnter = document.getElementById('chatbox');
+      chatEnter.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+         event.preventDefault();
+         document.getElementById("submit").click();
+        }
+      });
+
+      function myFunction(x) {
+        x.classList.toggle("change");
+        const leftmenu = document.getElementById('left-menu');
+        const container = document.getElementById('container');
+        if(leftmenu.style.display == 'block'){
+          leftmenu.style.display = 'none';
+        }
+        else{
+          leftmenu.style.display = 'block';
+        }
+      }
+      var msgSent;
+      function sendMessage(){
+        const chatbox = document.getElementById('chatbox');
+        const chatDiv = document.getElementById('chatDiv');
+        const message = document.getElementById('message');
+        const sendmessageDiv = document.createElement('sendmessageDiv');
+        const br = document.createElement('br');
+        sendmessageDiv.setAttribute('id','sendmessageDiv');
+        sendmessageDiv.innerHTML = chatbox.value;
+        msgSent = chatbox.value;
+        socket.emit('sendMessage',{
+          str:chatbox.value,
+          clientName: localStorage.clientName
+        });
+        chatbox.value = '';
+        message.appendChild(sendmessageDiv);
+        message.appendChild(br);
+      }
+
+
+      socket.on('recieveMessage',function(data){
+        if(msgSent!==undefined){
+          if(msgSent !== data.str){
+            console.log('recieved message');
+            const recieveMessage = document.createElement('div');
+            recieveMessage.setAttribute('id','recieveMessage');
+            const message = document.getElementById('message');
+            message.scroll(0,400)
+            const br1 = document.createElement('br');
+            recieveMessage.innerHTML =data.clientName +'<br>'+ data.str;
+            message.appendChild(recieveMessage);
+            message.appendChild(br1);
+          }
+        }
+        else {
+          console.log('recieved message');
+          const recieveMessage = document.createElement('div');
+          recieveMessage.setAttribute('id','recieveMessage');
+          const message = document.getElementById('message');
+          const br1 = document.createElement('br');
+          recieveMessage.innerHTML = data.clientName +'<br>'+data.str;
+          message.appendChild(recieveMessage);
+          message.appendChild(br1);
+        }
+      });
+    </script>
+  </body>
+</html>
