@@ -6,11 +6,51 @@
     <title>CHATTx</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
+  <style media="screen">
+  #username{
+    padding: 1em;
+    margin-top: 2em;
+    width: 100%;
+    height: 3em;
+    border: 1px solid white;
+    border-radius: 1em;
+    box-sizing: border-box;
+  }
+  #submit{
+    background: #C0C0C0;
+    margin: 2em;
+    text-align: center;
+    width: 100%;
+    height: 3em;
+    border-radius: 1em;
+    box-shadow: 1px 2px #f0f0f0;
+  }
+  #submit:hover{
+    background: #808080;
+  }
+  #submit:active {
+    background-color: #808080;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+    border: 0px solid black;
+  }
+  #main {
+    width: 30em;
+    height: 30em;
+    margin: 2em;
+    padding: 1em;
+  }
+  </style>
   <body>
     <script type="text/javascript">
       var socket = io();
       function addClient(){
         const username = document.getElementById('username');
+        var val = username.value;
+        val = val.trim()
+        if(val.length == 0) {
+          alert('please type a proper name!')
+        }
         socket.emit('addClient',username.value);
         localStorage.clientName = username.value;
       }
@@ -19,12 +59,18 @@
       <div class="main" id="main">
         <div class="head" id="head">
           <h2>WELCOME TO CHATTx</h2>
+          <p>This is chatting website where anyone can join <br>
+            and chat with everyone. <br>
+            Basically it's a group chat with everyone around the world! <br>
+            soo Let's get you in, please type your username. <br>
+            your username need not be your name. Maybe your <br>
+            favourite charecter from movies or anything like that.. <br>
+          </p>
           <form class="" action="/chatpage" method="post">
-            <input id='username' type="text" name="" value="" placeholder="what should people call you??????"><br>
+            <input id='username' type="text" name="usname" value="" placeholder="username??"><br>
             <input id="submit"type="submit" onclick="addClient()" value="Get started..">
           </form>
         </div>
       </div>
-    </center>
   </body>
 </html>

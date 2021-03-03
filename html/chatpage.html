@@ -15,15 +15,9 @@
     </style>
   </head>
   <body>
-    <div class="w3-center w3-animate-left" id="left-menu" style="display: none">
+    <!--<div class="w3-center w3-animate-left" id="left-menu" style="display: none">
     </div>
-    <div class="container" id ='container' onclick="myFunction(this)">
-      <div class="bar1"></div>
-      <div class="bar2"></div>
-      <div class="bar3"></div>
-    </div>
-    <br><br>
-    <center><div class="main-chat" id='chatDiv'>
+    <div class="main-chat" id='chatDiv'>
       <div class="" id='elements'>
         <div class="message" id="message">
 
@@ -31,21 +25,159 @@
         <input id='chatbox' type="text" name="" value="" placeholder="type your message here..">
         <input id="submit"type="submit" onclick="sendMessage()" value="send">
       </div>
-    </div></center>
+    </div>-->
+    <style media="screen">
+      .mainOnline {
+        margin: 5em;
+        width: 20em;
+        height: 20em;
+        background-color: #33cccc;
+        color: #3333cc;
+        box-sizing: border-box;
+        float: left;
+      }
+      .header {
+        box-sizing: border-box;
+        width: 100%;
+        height: 30%;
+        background-color: blue;
+        color: white;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        text-align: center;
+      }
+      .onlineContent {
+        box-sizing: border-box;
+        width: 90%;
+        height: 70%;
+        overflow-y: auto;
+        margin: 5%;
+        padding: 2em;
+        color: black;
+      }
+      .main {
+        box-sizing: border-box;
+        float: left;
+        width: 35em;
+        height: 30em;
+        background-color: #33cccc;
+        color: #3333cc;
+        margin: 5em;
+        background-image: url('/wallpaper');
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .content {
+        box-sizing: border-box;
+        width: 90%;
+        height: 60%;
+        overflow-y: auto;
+        margin: 5%;
+        padding: 2em;
+        color: black;
+      }
+      #sendmessageDiv {
+        width: 100%;
+        min-height: 30%;
+        padding: 1em;
+        box-sizing: border-box;
+        text-align: right;
+        border-radius: 0.5em;
+        float: right;
+        margin: 0.5em;
+        background-color: #c0c0c0;
+        display: inline-block
+      }
+      #recieveMessage {
+        width: 100%;
+        min-height: 30%;
+        padding: 1em;
+        box-sizing: border-box;
+        text-align: left;
+        border-radius: 0.5em;
+        float: left;
+        margin-bottom: 0.5em;
+        background-color: #c0c0c0;
+        display: inline-block
+      }
+      #chatboxInput {
+        width: 100%;
+        height: 10%;
+        box-sizing: border-box;
+        padding: 2em;
+      }
+    </style>
+    <div class="mainOnline">
+      <header>
+        <div class="header">
+          online users
+        </div>
+      </header>
+      <div class="onlineContent">
+
+      </div>
+    </div>
+    <div class="main">
+      <header>
+        <div class="header">
+          Group Chat
+        </div>
+      </header>
+      <div class="content">
+
+      </div>
+      <input id='chatboxInput' type="text" name="" value="" placeholder="type your message here..">
+      <input id="submit"type="submit" onclick="sendMessage()" value="send">
+    </div>
     <script>
+      let onlineUsers = 0;
       var socket = io();
-      const chatEnter = document.getElementById('chatbox');
+      socket.emit('sendOnline',{
+        name: localStorage.clientName
+      })
+      socket.on('getOnline',(data) => {
+        let i = 0;
+        console.log(data);
+        for(i=0;i<data.length;i++) {
+          let x = i+1;
+          alert(data[i])
+          var content = document.getElementsByClassName('onlineContent')[0];
+          content.innerHTML += '<span> <b>'+ x +') ' + data[i] +'</b></span> <br><br>'
+        }
+      })
+      socket.on('typing',function(data) {
+        var header = document.getElementsByClassName('header')[1];
+        if(data.name != localStorage.clientName) {
+          header.innerHTML = data.name + ' is typing...'
+        }
+      })
+      socket.on('doneTyping',(data) => {
+        var header = document.getElementsByClassName('header')[1];
+        if(data.name != localStorage.clientName) {
+          header.innerHTML = 'Group Chat'
+        }
+      })
+      const chatEnter = document.getElementById('chatboxInput');
       chatEnter.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
          event.preventDefault();
          document.getElementById("submit").click();
+         socket.emit('doneTyping',{
+           name: localStorage.clientName
+         })
+        }
+        else {
+          //send typing socket..
+          socket.emit('typing',{
+            name: localStorage.clientName
+          })
         }
       });
 
       function myFunction(x) {
         x.classList.toggle("change");
         const leftmenu = document.getElementById('left-menu');
-        const container = document.getElementById('container');
+        const container = document.getElementsByClassName('container')[0];
         if(leftmenu.style.display == 'block'){
           leftmenu.style.display = 'none';
         }
@@ -55,13 +187,12 @@
       }
       var msgSent;
       function sendMessage(){
-        const chatbox = document.getElementById('chatbox');
-        const chatDiv = document.getElementById('chatDiv');
-        const message = document.getElementById('message');
+        const chatbox = document.getElementById('chatboxInput');
+        const message = document.getElementsByClassName('content')[0];
         const sendmessageDiv = document.createElement('sendmessageDiv');
         const br = document.createElement('br');
         sendmessageDiv.setAttribute('id','sendmessageDiv');
-        sendmessageDiv.innerHTML = chatbox.value;
+        sendmessageDiv.innerHTML = '<b>' + 'You( '+localStorage.clientName+' )' +'</b>' +'<br>'+ chatbox.value;
         msgSent = chatbox.value;
         socket.emit('sendMessage',{
           str:chatbox.value,
@@ -70,6 +201,7 @@
         chatbox.value = '';
         message.appendChild(sendmessageDiv);
         message.appendChild(br);
+        message.scrollTop = message.scrollHeight;
       }
 
 
@@ -79,23 +211,25 @@
             console.log('recieved message');
             const recieveMessage = document.createElement('div');
             recieveMessage.setAttribute('id','recieveMessage');
-            const message = document.getElementById('message');
+            const message = document.getElementsByClassName('content')[0];
             message.scroll(0,400)
             const br1 = document.createElement('br');
-            recieveMessage.innerHTML =data.clientName +'<br>'+ data.str;
+            recieveMessage.innerHTML ='<b>' + data.clientName +'</b>' +'<br>'+ data.str;
             message.appendChild(recieveMessage);
             message.appendChild(br1);
+            message.scrollTop = message.scrollHeight;
           }
         }
         else {
           console.log('recieved message');
           const recieveMessage = document.createElement('div');
           recieveMessage.setAttribute('id','recieveMessage');
-          const message = document.getElementById('message');
+          const message = document.getElementsByClassName('content')[0];
           const br1 = document.createElement('br');
-          recieveMessage.innerHTML = data.clientName +'<br>'+data.str;
+          recieveMessage.innerHTML = '<b>' + data.clientName +'</b>' +'<br>'+data.str;
           message.appendChild(recieveMessage);
           message.appendChild(br1);
+          message.scrollTop = message.scrollHeight;
         }
       });
     </script>

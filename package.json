@@ -16,14 +16,15 @@
   "bugs": {
     "url": "https://github.com/anandteertha/distributed-p2p/issues"
   },
-  
   "engines": {
     "node": "12.18.1"
   },
-
   "homepage": "https://github.com/anandteertha/distributed-p2p#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "dgram": "^1.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "http": "0.0.1-security",
     "path": "^0.12.7",
     "socket.io": "^2.3.0"
